@@ -1,6 +1,7 @@
 package com.ahmedorabi.trackingapp.features.details
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,14 +25,18 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var trip: TripEntity
+    private var trip: TripEntity? = null
     private lateinit var map: GoogleMap
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            trip = it.getParcelable("trip_entity")!!
+            trip = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable("trip_entity", TripEntity::class.java)
+            } else {
+                it.getParcelable("trip_entity")
+            }
         }
     }
 
@@ -48,10 +53,11 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
 
         Timber.e("Trip Entity %s", trip)
 
-        binding.distanceTv.text = trip.distance
-        binding.stepsTv.text = trip.steps
-        binding.trackTimeTv.text = trip.time.getTimeFormatted()
-
+        trip?.let {
+            binding.distanceTv.text = it.distance
+            binding.stepsTv.text = it.steps
+            binding.trackTimeTv.text = it.time.getTimeFormatted()
+        }
 
 
         return binding.root
@@ -69,14 +75,16 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
         map.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(
-                    trip.currentLocation.latitude,
-                    trip.currentLocation.longitude
+                    trip?.currentLocation?.latitude ?: 0.0,
+                    trip?.currentLocation?.longitude ?: 0.0
                 ), 14f
             )
         )
 
-        drawRoute(trip.paths)
+        trip?.let {
+            drawRoute(it.paths)
 
+        }
     }
 
 

@@ -12,7 +12,7 @@ class TripUseCaseImpl @Inject constructor(private val tripDao: TripDao) : TripUs
         tripDao.insertTrip(tripEntity)
     }
 
-    override fun getTrips(): LiveData<List<TripEntity>> {
+    override fun getTrips(): List<TripEntity> {
         return tripDao.getAllTrips()
     }
 }

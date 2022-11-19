@@ -39,7 +39,7 @@ class HistoryFragment : Fragment() {
         binding.recyclerViewMain.adapter = adapter
 
 
-        viewModel.getAllTrips().observe(viewLifecycleOwner) {
+        viewModel.allTrips.observe(viewLifecycleOwner) {
             it?.let {
                 Timber.e("All Trips %s", it)
                 adapter.submitList(it)

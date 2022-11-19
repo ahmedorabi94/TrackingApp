@@ -1,6 +1,5 @@
 package com.ahmedorabi.trackingapp.core.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,6 +12,6 @@ interface TripDao {
     suspend fun insertTrip(tripEntity: TripEntity)
 
     @Query("Select * from trip")
-    fun getAllTrips(): LiveData<List<TripEntity>>
+    fun getAllTrips(): List<TripEntity>
 
 }
