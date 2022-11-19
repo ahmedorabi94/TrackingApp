@@ -7,9 +7,9 @@
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,13 +17,15 @@
         <LinearLayout
             android:id="@+id/line1"
             android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tracking time : "
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/tracking_time"
                 android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -31,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="2000"
+                android:fontFamily="@font/roboto_bold"
 
                 />
 
@@ -43,14 +45,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line1">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Traveled distance : "
-                android:textStyle="bold" />
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/traveled_distance" />
 
 
             <com.google.android.material.textview.MaterialTextView
@@ -58,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="100" />
+                android:fontFamily="@font/roboto_bold" />
 
 
         </LinearLayout>
@@ -67,6 +71,8 @@
             android:id="@+id/line3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line2">
@@ -74,15 +80,15 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="The number of steps : "
-                android:textStyle="bold" />
+                android:fontFamily="@font/roboto_black"
+                android:text="@string/number_of_steps" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/stepsTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="100" />
+                android:fontFamily="@font/roboto_bold" />
 
         </LinearLayout>
 
@@ -90,15 +96,15 @@
     </LinearLayout>
 
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linear" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

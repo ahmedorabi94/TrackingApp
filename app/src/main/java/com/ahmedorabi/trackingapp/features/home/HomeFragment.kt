@@ -58,6 +58,7 @@ class HomeFragment : Fragment() {
 
     private fun startTracking() {
 
+        binding!!.mainConstraint.visibility = View.VISIBLE
         binding!!.stepsTv.text = ""
         binding!!.distanceTv.text = ""
         binding!!.trackTimeTv.base = SystemClock.elapsedRealtime()
@@ -67,6 +68,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun stopTracking() {
+
+        binding!!.mainConstraint.visibility = View.GONE
 
         viewModel.stopTracking()
 

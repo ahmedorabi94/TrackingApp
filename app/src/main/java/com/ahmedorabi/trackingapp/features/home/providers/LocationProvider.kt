@@ -2,7 +2,6 @@ package com.ahmedorabi.trackingapp.features.home.providers
 
 import android.annotation.SuppressLint
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.LocationCallback
@@ -16,50 +15,50 @@ import kotlin.math.roundToInt
 @SuppressLint("MissingPermission")
 class LocationProvider(private val activity: FragmentActivity) {
 
-  private val client by lazy { LocationServices.getFusedLocationProviderClient(activity) }
+    private val client by lazy { LocationServices.getFusedLocationProviderClient(activity) }
 
-  private val locations = mutableListOf<LatLng>()
-  private var distance = 0
+    private val locations = mutableListOf<LatLng>()
+    private var distance = 0
 
-  val liveLocations = MutableLiveData<List<LatLng>>()
-  val liveDistance = MutableLiveData<Int>()
-  val liveLocation = MutableLiveData<LatLng>()
+    val liveLocations = MutableLiveData<List<LatLng>>()
+    val liveDistance = MutableLiveData<Int>()
+    val liveLocation = MutableLiveData<LatLng>()
 
-  private val locationCallback = object : LocationCallback() {
-    override fun onLocationResult(result: LocationResult) {
-      val currentLocation = result.lastLocation
-      val latLng = LatLng(currentLocation!!.latitude, currentLocation.longitude)
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(result: LocationResult) {
+            val currentLocation = result.lastLocation
+            val latLng = LatLng(currentLocation!!.latitude, currentLocation.longitude)
 
-      val lastLocation = locations.lastOrNull()
+            val lastLocation = locations.lastOrNull()
 
-      if (lastLocation != null) {
-        distance += SphericalUtil.computeDistanceBetween(lastLocation, latLng).roundToInt()
-        liveDistance.value = distance
-      }
+            if (lastLocation != null) {
+                distance += SphericalUtil.computeDistanceBetween(lastLocation, latLng).roundToInt()
+                liveDistance.value = distance
+            }
 
-      locations.add(latLng)
-      liveLocations.value = locations
+            locations.add(latLng)
+            liveLocations.value = locations
+        }
     }
-  }
 
-  fun getUserLocation() {
-    client.lastLocation.addOnSuccessListener { location ->
-      val latLng = LatLng(location.latitude, location.longitude)
-      locations.add(latLng)
-      liveLocation.value = latLng
+    fun getUserLocation() {
+        client.lastLocation.addOnSuccessListener { location ->
+            val latLng = LatLng(location.latitude, location.longitude)
+            locations.add(latLng)
+            liveLocation.value = latLng
+        }
     }
-  }
 
-  fun trackUser() {
-    val locationRequest = LocationRequest.create()
-    locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-    locationRequest.interval = 5000
-    client.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-  }
+    fun trackUser() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        client.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
 
-  fun stopTracking() {
-    client.removeLocationUpdates(locationCallback)
-    locations.clear()
-    distance = 0
-  }
+    fun stopTracking() {
+        client.removeLocationUpdates(locationCallback)
+        locations.clear()
+        distance = 0
+    }
 }

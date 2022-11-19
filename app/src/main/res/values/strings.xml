@@ -10,4 +10,10 @@
     <string name="start_label">Start</string>
     <string name="stop_label">Stop</string>
     <string name="distance_value">%d meters</string>
+    <string name="start">Start</string>
+    <string name="resume">Resume</string>
+    <string name="end">Stop</string>
+    <string name="tracking_time">Tracking time :</string>
+    <string name="traveled_distance">Traveled distance :</string>
+    <string name="number_of_steps">Number of Steps</string>
 </resources>
