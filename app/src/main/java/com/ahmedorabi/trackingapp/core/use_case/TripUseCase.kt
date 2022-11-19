@@ -6,5 +6,5 @@ interface TripUseCase {
 
     suspend fun addTrip(tripEntity: TripEntity)
 
-    fun getTrips() : List<TripEntity>
+    suspend fun getTrips() : List<TripEntity>
 }

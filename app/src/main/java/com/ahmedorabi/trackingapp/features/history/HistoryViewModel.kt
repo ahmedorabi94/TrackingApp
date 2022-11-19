@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.ahmedorabi.trackingapp.core.db.TripEntity
 import com.ahmedorabi.trackingapp.core.use_case.TripUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,9 +22,8 @@ class HistoryViewModel @Inject constructor(private val tripUseCase: TripUseCase)
     }
 
     private fun getAllTrips() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _allTrips.postValue(tripUseCase.getTrips())
-
+        viewModelScope.launch {
+            _allTrips.value = tripUseCase.getTrips()
         }
     }
 

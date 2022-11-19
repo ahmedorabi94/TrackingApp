@@ -1,6 +1,5 @@
 package com.ahmedorabi.trackingapp.core.use_case
 
-import androidx.lifecycle.LiveData
 import com.ahmedorabi.trackingapp.core.db.TripDao
 import com.ahmedorabi.trackingapp.core.db.TripEntity
 import javax.inject.Inject
@@ -12,7 +11,7 @@ class TripUseCaseImpl @Inject constructor(private val tripDao: TripDao) : TripUs
         tripDao.insertTrip(tripEntity)
     }
 
-    override fun getTrips(): List<TripEntity> {
+    override suspend fun getTrips(): List<TripEntity> {
         return tripDao.getAllTrips()
     }
 }
