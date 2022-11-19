@@ -1,14 +1,12 @@
 package com.ahmedorabi.trackingapp.features.home
 
 import android.Manifest
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -85,6 +83,11 @@ class HomeFragment : Fragment() {
         binding!!.distanceTv.text = ui.formattedDistance
         binding!!.stepsTv.text = ui.formattedPace
         Timber.e("current location %s", ui.currentLocation)
+
+        if (ui.formattedPace.isNotEmpty()) {
+            binding!!.circularProgressBar.progress = ui.formattedPace.toFloat()
+
+        }
 
 
         viewModel.addTrip(

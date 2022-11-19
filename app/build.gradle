@@ -102,6 +102,7 @@ dependencies {
     implementation 'com.google.maps.android:maps-utils-ktx:3.2.0'
 
     implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
 
 
 }
