@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
 
     override fun onCreateView(
@@ -38,11 +38,11 @@ class HomeFragment : Fragment() {
 
         viewModel.initProviders(activity as AppCompatActivity)
 
-        binding!!.startBtn.setOnClickListener {
+        binding.startBtn.setOnClickListener {
             startTracking()
         }
 
-        binding!!.endBtn.setOnClickListener {
+        binding.endBtn.setOnClickListener {
             stopTracking()
         }
 
@@ -51,18 +51,18 @@ class HomeFragment : Fragment() {
 
         }
 
-        return binding!!.root
+        return binding.root
 
     }
 
 
     private fun startTracking() {
 
-        binding!!.mainConstraint.visibility = View.VISIBLE
-        binding!!.stepsTv.text = ""
-        binding!!.distanceTv.text = ""
-        binding!!.trackTimeTv.base = SystemClock.elapsedRealtime()
-        binding!!.trackTimeTv.start()
+        binding.mainConstraint.visibility = View.VISIBLE
+        binding.stepsTv.text = ""
+        binding.distanceTv.text = ""
+        binding.trackTimeTv.base = SystemClock.elapsedRealtime()
+        binding.trackTimeTv.start()
 
         viewModel.startTracking()
     }
@@ -79,19 +79,19 @@ class HomeFragment : Fragment() {
                     distance = ui.distance,
                     currentLocation = ui.currentLocation ?: LatLng(0.0, 0.0),
                     paths = ui.userPath,
-                    time = SystemClock.elapsedRealtime() - binding!!.trackTimeTv.base
+                    time = SystemClock.elapsedRealtime() - binding.trackTimeTv.base
 
                 )
 
-                binding!!.mainConstraint.visibility = View.GONE
+                binding.mainConstraint.visibility = View.GONE
 
                 viewModel.stopTracking()
 
-                binding!!.trackTimeTv.stop()
+                binding.trackTimeTv.stop()
 
 
                 viewModel.tripState.value = TripUI.EMPTY
-                Navigation.findNavController(binding!!.root)
+                Navigation.findNavController(binding.root)
                     .navigate(R.id.action_homeFragment_to_historyFragment)
 
             }
@@ -104,10 +104,10 @@ class HomeFragment : Fragment() {
 
     private fun updateUi(ui: TripUI) {
 
-        binding!!.distanceTv.text = ui.distance
-        binding!!.stepsTv.text = ui.steps
+        binding.distanceTv.text = ui.distance
+        binding.stepsTv.text = ui.steps
         if (ui.steps.isNotEmpty()) {
-            binding!!.circularProgressBar.progress = ui.steps.toFloat()
+            binding.circularProgressBar.progress = ui.steps.toFloat()
 
         }
     }
