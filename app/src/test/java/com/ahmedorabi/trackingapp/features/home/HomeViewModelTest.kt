@@ -40,7 +40,7 @@ class HomeViewModelTest {
 
 
     @Test
-    fun test_add_city() {
+    fun test_addTrip() {
 
         testCoroutineRule.runBlockingTest {
 
