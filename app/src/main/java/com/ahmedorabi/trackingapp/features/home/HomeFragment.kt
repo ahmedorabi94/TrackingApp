@@ -69,14 +69,35 @@ class HomeFragment : Fragment() {
 
     private fun stopTracking() {
 
-        binding!!.mainConstraint.visibility = View.GONE
+        val ui = viewModel.ui.value
 
-        viewModel.stopTracking()
+        if (ui != TripUI.EMPTY) {
 
-        binding!!.trackTimeTv.stop()
+            ui?.let {
+                viewModel.addTrip(
+                    steps = ui.formattedPace,
+                    distance = ui.formattedDistance,
+                    currentLocation = ui.currentLocation ?: LatLng(0.0, 0.0),
+                    paths = ui.userPath,
+                    time = SystemClock.elapsedRealtime() - binding!!.trackTimeTv.base
 
-        Navigation.findNavController(binding!!.root)
-            .navigate(R.id.action_homeFragment_to_historyFragment)
+                )
+
+                binding!!.mainConstraint.visibility = View.GONE
+
+                viewModel.stopTracking()
+
+                binding!!.trackTimeTv.stop()
+
+
+                viewModel.ui.value = TripUI.EMPTY
+                Navigation.findNavController(binding!!.root)
+                    .navigate(R.id.action_homeFragment_to_historyFragment)
+
+            }
+
+        }
+
 
     }
 
@@ -85,23 +106,10 @@ class HomeFragment : Fragment() {
 
         binding!!.distanceTv.text = ui.formattedDistance
         binding!!.stepsTv.text = ui.formattedPace
-        Timber.e("current location %s", ui.currentLocation)
-
         if (ui.formattedPace.isNotEmpty()) {
             binding!!.circularProgressBar.progress = ui.formattedPace.toFloat()
 
         }
-
-
-        viewModel.addTrip(
-            steps = ui.formattedPace,
-            distance = ui.formattedDistance,
-            currentLocation = ui.currentLocation ?: LatLng(0.0, 0.0),
-            paths = ui.userPath,
-            time = SystemClock.elapsedRealtime() - binding!!.trackTimeTv.base
-
-        )
-
     }
 
     override fun onDestroyView() {

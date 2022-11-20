@@ -25,9 +25,6 @@ class HomeViewModel @Inject constructor(
     private lateinit var stepCounter: StepCounter
 
 
-    private var mTripEntity: TripEntity? = null
-
-
     fun addTrip(
         steps: String,
         distance: String,
@@ -47,17 +44,10 @@ class HomeViewModel @Inject constructor(
             time = time
         )
 
-
-        if (trip.steps != (mTripEntity?.steps ?: 0) && trip.steps != "0" && trip.steps != "") {
-            mTripEntity = trip
-
-            viewModelScope.launch {
-                tripUseCase.addTrip(trip)
-
-            }
+        viewModelScope.launch {
+            tripUseCase.addTrip(trip)
 
         }
-
 
     }
 
