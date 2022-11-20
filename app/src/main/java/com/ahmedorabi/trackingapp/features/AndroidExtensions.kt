@@ -8,15 +8,4 @@ fun Long.getTimeFormatted(): String {
 
     return "$hours : $minutes : $seconds"
 
-//         return   String.format("%d min, %d sec",
-//                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
-//                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
-//                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds))
-//            );
-
-//            Timber.e("time " + dateInMillis)
-//            val formatter = SimpleDateFormat("mm:ss")
-//            return formatter.format(Date(dateInMillis))
-
-
 }

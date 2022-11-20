@@ -6,16 +6,10 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.hardware.SensorManager.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 
 class StepCounter(private val activity: FragmentActivity) : SensorEventListener {
-
-  interface StepUpdater {
-
-    fun onStepUpdated(steps: Int)
-  }
 
   val liveSteps = MutableLiveData<Int>()
 

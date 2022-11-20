@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
             stopTracking()
         }
 
-        viewModel.ui.observe(viewLifecycleOwner) {
+        viewModel.tripState.observe(viewLifecycleOwner) {
             updateUi(it)
 
         }
@@ -69,14 +69,14 @@ class HomeFragment : Fragment() {
 
     private fun stopTracking() {
 
-        val ui = viewModel.ui.value
+        val ui = viewModel.tripState.value
 
         if (ui != TripUI.EMPTY) {
 
             ui?.let {
                 viewModel.addTrip(
-                    steps = ui.formattedPace,
-                    distance = ui.formattedDistance,
+                    steps = ui.steps,
+                    distance = ui.distance,
                     currentLocation = ui.currentLocation ?: LatLng(0.0, 0.0),
                     paths = ui.userPath,
                     time = SystemClock.elapsedRealtime() - binding!!.trackTimeTv.base
@@ -90,7 +90,7 @@ class HomeFragment : Fragment() {
                 binding!!.trackTimeTv.stop()
 
 
-                viewModel.ui.value = TripUI.EMPTY
+                viewModel.tripState.value = TripUI.EMPTY
                 Navigation.findNavController(binding!!.root)
                     .navigate(R.id.action_homeFragment_to_historyFragment)
 
@@ -104,10 +104,10 @@ class HomeFragment : Fragment() {
 
     private fun updateUi(ui: TripUI) {
 
-        binding!!.distanceTv.text = ui.formattedDistance
-        binding!!.stepsTv.text = ui.formattedPace
-        if (ui.formattedPace.isNotEmpty()) {
-            binding!!.circularProgressBar.progress = ui.formattedPace.toFloat()
+        binding!!.distanceTv.text = ui.distance
+        binding!!.stepsTv.text = ui.steps
+        if (ui.steps.isNotEmpty()) {
+            binding!!.circularProgressBar.progress = ui.steps.toFloat()
 
         }
     }

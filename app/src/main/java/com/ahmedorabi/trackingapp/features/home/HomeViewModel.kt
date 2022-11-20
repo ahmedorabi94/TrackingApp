@@ -52,40 +52,37 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    val ui = MutableLiveData(TripUI.EMPTY)
+    val tripState = MutableLiveData(TripUI.EMPTY)
 
 
     fun initProviders(activity: FragmentActivity) {
         locationProvider = LocationProvider(activity)
         stepCounter = StepCounter(activity)
-        onViewCreated(activity)
-
-
+        observeUserTrip(activity)
     }
 
 
-    private fun onViewCreated(activity: FragmentActivity) {
-
+    private fun observeUserTrip(activity: FragmentActivity) {
 
         locationProvider.liveLocations.observe(activity) { locations ->
-            val current = ui.value
-            ui.value = current?.copy(userPath = locations)
+            val current = tripState.value
+            tripState.value = current?.copy(userPath = locations)
         }
 
         locationProvider.liveLocation.observe(activity) { currentLocation ->
-            val current = ui.value
-            ui.value = current?.copy(currentLocation = currentLocation)
+            val current = tripState.value
+            tripState.value = current?.copy(currentLocation = currentLocation)
         }
 
         locationProvider.liveDistance.observe(activity) { distance ->
-            val current = ui.value
+            val current = tripState.value
             val formattedDistance = activity.getString(R.string.distance_value, distance)
-            ui.value = current?.copy(formattedDistance = formattedDistance)
+            tripState.value = current?.copy(distance = formattedDistance)
         }
 
         stepCounter.liveSteps.observe(activity) { steps ->
-            val current = ui.value
-            ui.value = current?.copy(formattedPace = "$steps")
+            val current = tripState.value
+            tripState.value = current?.copy(steps = "$steps")
         }
 
     }
@@ -93,13 +90,13 @@ class HomeViewModel @Inject constructor(
 
     fun startTracking() {
         stepCounter.setupStepCounter()
-        locationProvider.getUserLocation()
         locationProvider.trackUser()
+        locationProvider.getUserLocation()
 
-        val currentUi = ui.value
-        ui.value = currentUi?.copy(
-            formattedPace = TripUI.EMPTY.formattedPace,
-            formattedDistance = TripUI.EMPTY.formattedDistance
+        val currentUi = tripState.value
+        tripState.value = currentUi?.copy(
+            steps = TripUI.EMPTY.steps,
+            distance = TripUI.EMPTY.distance
         )
     }
 

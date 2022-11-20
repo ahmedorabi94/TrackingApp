@@ -3,8 +3,8 @@ package com.ahmedorabi.trackingapp.features.home
 import com.google.android.gms.maps.model.LatLng
 
 data class TripUI(
-    val formattedPace: String,
-    val formattedDistance: String,
+    val steps: String,
+    val distance: String,
     val currentLocation: LatLng?,
     val userPath: List<LatLng>
 ) {
@@ -12,8 +12,8 @@ data class TripUI(
     companion object {
 
         val EMPTY = TripUI(
-            formattedPace = "",
-            formattedDistance = "",
+            steps = "",
+            distance = "",
             currentLocation = null,
             userPath = emptyList()
         )
