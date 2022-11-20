@@ -1,11 +1,15 @@
 package com.ahmedorabi.trackingapp.features.home
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,6 +17,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.ahmedorabi.trackingapp.R
 import com.ahmedorabi.trackingapp.databinding.FragmentHomeBinding
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -35,6 +43,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         requestAllRequiredPermission()
+        enableLocationSettings()
 
         viewModel.initProviders(activity as AppCompatActivity)
 
@@ -133,6 +142,46 @@ class HomeFragment : Fragment() {
             )
         )
     }
+
+    private fun enableLocationSettings() {
+        val locationRequest = LocationRequest.create()
+            .setInterval((10 * 1000).toLong())
+            .setFastestInterval((2 * 1000).toLong())
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        LocationServices
+            .getSettingsClient(requireActivity())
+            .checkLocationSettings(builder.build())
+            .addOnSuccessListener(
+                requireActivity()
+            ) { }
+            .addOnFailureListener(
+                requireActivity()
+            ) { ex: Exception? ->
+                if (ex is ResolvableApiException) {
+                    try {
+                        val intentSenderRequest =
+                            IntentSenderRequest.Builder(ex.resolution)
+                                .build()
+                        resolutionForResult.launch(intentSenderRequest)
+                    } catch (exception: Exception) {
+                        Timber.e( "enableLocationSettings: $exception")
+                    }
+                }
+            }
+    }
+
+    private val resolutionForResult: ActivityResultLauncher<IntentSenderRequest> =
+        registerForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == RESULT_OK) {
+                Timber.e("Granted")
+            } else {
+                Timber.e("Not Granted")
+            }
+        }
 
 }
 

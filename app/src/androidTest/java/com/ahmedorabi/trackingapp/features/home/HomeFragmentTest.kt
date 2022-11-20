@@ -21,7 +21,6 @@ class HomeFragmentTest {
         launchFragmentInHiltContainer<HomeFragment>()
 
         onView(withId(R.id.startBtn)).check(matches(isDisplayed()))
-        onView(withId(R.id.resumeBtn)).check(matches(isDisplayed()))
         onView(withId(R.id.endBtn)).check(matches(isDisplayed()))
 
     }
@@ -34,7 +33,6 @@ class HomeFragmentTest {
 
 
         onView(withId(R.id.startBtn)).check(matches(isDisplayed()))
-        onView(withId(R.id.resumeBtn)).check(matches(isDisplayed()))
         onView(withId(R.id.endBtn)).check(matches(isDisplayed()))
 
         onView(withId(R.id.startBtn)).perform(click())
