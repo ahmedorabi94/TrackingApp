@@ -10,22 +10,22 @@ import java.lang.reflect.Type
 class DataConverter {
 
     @TypeConverter
-    fun fromCountryLangList(countryLang: List<LatLng?>?): String? {
+    fun arrayListToJson(countryLang: ArrayList<LatLng?>?): String? {
         if (countryLang == null) {
             return null
         }
         val gson = Gson()
-        val type: Type = object : TypeToken<List<LatLng?>?>() {}.type
+        val type: Type = object : TypeToken<ArrayList<LatLng?>?>() {}.type
         return gson.toJson(countryLang, type)
     }
 
     @TypeConverter
-    fun toCountryLangList(countryLangString: String?): List<LatLng>? {
+    fun jsonToArrayList(countryLangString: String?): ArrayList<LatLng>? {
         if (countryLangString == null) {
             return null
         }
         val gson = Gson()
-        val type: Type = object : TypeToken<List<LatLng?>?>() {}.type
-        return gson.fromJson<List<LatLng>>(countryLangString, type)
+        val type: Type = object : TypeToken<ArrayList<LatLng?>?>() {}.type
+        return gson.fromJson<ArrayList<LatLng>>(countryLangString, type)
     }
 }

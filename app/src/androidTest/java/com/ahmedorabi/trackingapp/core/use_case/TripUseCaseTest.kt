@@ -9,6 +9,7 @@ import com.ahmedorabi.trackingapp.core.db.AppDatabase
 import com.ahmedorabi.trackingapp.core.db.CurrentLocation
 import com.ahmedorabi.trackingapp.core.db.TripDao
 import com.ahmedorabi.trackingapp.core.db.TripEntity
+import com.google.android.gms.maps.model.LatLng
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -16,6 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import timber.log.Timber
 import java.io.IOException
 
 
@@ -53,17 +55,20 @@ class TripUseCaseTest {
             time = 2,
             distance = "23",
             currentLocation = CurrentLocation(0.0, 1.2),
-            paths = emptyList()
+            paths = arrayListOf(LatLng(9.0,8.9))
         )
 
 
         runBlocking {
             tripDao.insertTrip(trip)
             val list = tripDao.getAllTrips()
+            Timber.e("list " + list)
             assertEquals(list.size, 1)
             assertEquals(list[0].steps, "2")
             assertEquals(list[0].time, 2)
             assertEquals(list[0].distance, "23")
+            assertEquals(list[0].paths.get(0).latitude, 9.0)
+
         }
 
     }
@@ -76,7 +81,7 @@ class TripUseCaseTest {
             time = 2,
             distance = "23",
             currentLocation = CurrentLocation(0.0, 1.2),
-            paths = emptyList()
+            paths = arrayListOf()
         )
 
         val trip2 = TripEntity(
@@ -84,7 +89,7 @@ class TripUseCaseTest {
             time = 22,
             distance = "3112",
             currentLocation = CurrentLocation(0.0, 1.2),
-            paths = emptyList()
+            paths = arrayListOf()
         )
 
         runBlocking {

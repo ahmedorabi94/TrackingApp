@@ -17,5 +17,5 @@ data class TripEntity(
     val distance: String,
     @Embedded
     val currentLocation: CurrentLocation,
-    val paths: List<LatLng>
+    val paths: ArrayList<LatLng> = ArrayList(),
 ) : Parcelable

@@ -40,10 +40,10 @@ class HomeViewModel @Inject constructor(
                 currentLocation.latitude,
                 currentLocation.longitude
             ),
-            paths = paths,
             time = time
         )
 
+        trip.paths.addAll(paths)
         viewModelScope.launch {
             tripUseCase.addTrip(trip)
 
