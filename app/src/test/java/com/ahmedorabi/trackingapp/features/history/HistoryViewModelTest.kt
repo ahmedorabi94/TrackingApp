@@ -41,7 +41,7 @@ class HistoryViewModelTest {
         time = 2,
         distance = "23",
         currentLocation = CurrentLocation(0.0, 1.2),
-        paths = emptyList()
+        paths = arrayListOf()
     )
 
     private val trip2 = TripEntity(
@@ -49,7 +49,7 @@ class HistoryViewModelTest {
         time = 22,
         distance = "3112",
         currentLocation = CurrentLocation(0.0, 1.2),
-        paths = emptyList()
+        paths = arrayListOf()
     )
 
     @Before

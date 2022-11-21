@@ -23,7 +23,8 @@ class HomeViewModel @Inject constructor(
     private lateinit var locationProvider: LocationProvider
 
     private lateinit var stepCounter: StepCounter
-
+    val tripState = MutableLiveData(TripUI.EMPTY)
+    val navigateToHistory = MutableLiveData(false)
 
     fun addTrip(
         steps: String,
@@ -46,13 +47,13 @@ class HomeViewModel @Inject constructor(
         trip.paths.addAll(paths)
         viewModelScope.launch {
             tripUseCase.addTrip(trip)
+            navigateToHistory.value = true
 
         }
 
     }
 
 
-    val tripState = MutableLiveData(TripUI.EMPTY)
 
 
     fun initProviders(activity: FragmentActivity) {

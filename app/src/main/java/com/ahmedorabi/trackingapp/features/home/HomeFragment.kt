@@ -59,6 +59,15 @@ class HomeFragment : Fragment() {
             updateUi(it)
 
         }
+        viewModel.navigateToHistory.observe(viewLifecycleOwner) { navigate ->
+            if (navigate) {
+
+                viewModel.navigateToHistory.value = false
+                viewModel.tripState.value = TripUI.EMPTY
+                Navigation.findNavController(binding.root)
+                    .navigate(R.id.action_homeFragment_to_historyFragment)
+            }
+        }
 
         return binding.root
 
@@ -98,10 +107,6 @@ class HomeFragment : Fragment() {
 
                 binding.trackTimeTv.stop()
 
-
-                viewModel.tripState.value = TripUI.EMPTY
-                Navigation.findNavController(binding.root)
-                    .navigate(R.id.action_homeFragment_to_historyFragment)
 
             }
 
@@ -166,7 +171,7 @@ class HomeFragment : Fragment() {
                                 .build()
                         resolutionForResult.launch(intentSenderRequest)
                     } catch (exception: Exception) {
-                        Timber.e( "enableLocationSettings: $exception")
+                        Timber.e("enableLocationSettings: $exception")
                     }
                 }
             }

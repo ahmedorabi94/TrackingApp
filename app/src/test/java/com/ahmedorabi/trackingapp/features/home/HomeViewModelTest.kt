@@ -60,7 +60,7 @@ class HomeViewModelTest {
                         0.9,
                         9.9
                     ),
-                    paths = emptyList(),
+                    paths = arrayListOf(),
                     time = 1111
                 )
             )
