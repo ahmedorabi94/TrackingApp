@@ -12,6 +12,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -40,45 +51,121 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MyApp()
+                init()
+            }
+        }
+    }
+
+    @Composable
+    fun MyApp() {
+        var isStartTracking by remember { mutableStateOf(false) }
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    if (!isStartTracking){
+                        isStartTracking = true
+                        viewModel.startTracking()
+                    }else{
+
+                        isStartTracking = false
+                    }
+                },
+            ) {
+                Text(text = "Start")
+            }
+            Button(onClick = {
+               // stopTracking()
+                isStartTracking = false
+            }) {
+                Text(text = "Stop")
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Column(modifier = Modifier.padding(20.dp)) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = "Tracking Time : ")
+                    Text(text = "1.6666666")
+                }
+
+                if (isStartTracking){
+                    SetStepsUI(distance = "", steps = "")
+                }else{
+                    SetStepsUI("24", "24")
+
+                }
+            }
+
+        }
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        MaterialTheme {
+            MyApp()
+        }
+    }
+
+    fun init() {
         requestAllRequiredPermission()
         enableLocationSettings()
 
         viewModel.initProviders(activity as AppCompatActivity)
 
-        binding.startBtn.setOnClickListener {
-            startTracking()
-        }
-
-        binding.endBtn.setOnClickListener {
-            stopTracking()
-        }
+//        binding.startBtn.setOnClickListener {
+//            startTracking()
+//        }
+//
+//        binding.endBtn.setOnClickListener {
+//            stopTracking()
+//        }
 
         viewModel.tripState.observe(viewLifecycleOwner) {
-            updateUi(it)
+           // updateUi(it)
 
         }
         viewModel.navigateToHistory.observe(viewLifecycleOwner) { navigate ->
-            if (navigate) {
-
-                viewModel.navigateToHistory.value = false
-                viewModel.tripState.value = TripUI.EMPTY
-                Navigation.findNavController(binding.root)
-                    .navigate(R.id.action_homeFragment_to_historyFragment)
-            }
+//            if (navigate) {
+//
+//                viewModel.navigateToHistory.value = false
+//                viewModel.tripState.value = TripUI.EMPTY
+//                Navigation.findNavController(binding.root)
+//                    .navigate(R.id.action_homeFragment_to_historyFragment)
+//            }
         }
 
-        return binding.root
+    }
 
+    @Composable
+    fun SetStepsUI(distance: String, steps: String) {
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(text = "Traveled Distance : ")
+            Text(text = distance)
+        }
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(text = "Number of Steps :")
+            Text(text = steps)
+        }
     }
 
 
     private fun startTracking() {
 
         binding.mainConstraint.visibility = View.VISIBLE
-        binding.stepsTv.text = ""
-        binding.distanceTv.text = ""
+        // binding.stepsTv.text = ""
+        // binding.distanceTv.text = ""
+        //SetStepsUI(distance = "", steps = "")
         binding.trackTimeTv.base = SystemClock.elapsedRealtime()
         binding.trackTimeTv.start()
 

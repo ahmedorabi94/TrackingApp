@@ -13,6 +13,7 @@ import com.ahmedorabi.trackingapp.features.home.providers.StepCounter
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -90,6 +91,7 @@ class HomeViewModel @Inject constructor(
 
 
     fun startTracking() {
+        Timber.e("Started")
         stepCounter.setupStepCounter()
         locationProvider.trackUser()
         locationProvider.getUserLocation()
